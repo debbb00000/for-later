@@ -1,0 +1,32 @@
+[
+  {
+    "timestamp": "2025-07-21T02:45:00Z",
+    "temperature": 25.2,
+    "pH": 7.1,
+    "dissolvedOxygen": 5.8
+  },
+  {
+    "timestamp": "2025-07-21T02:45:00Z",
+    "temperature": 25.1,
+    "pH": 7.5,
+    "dissolvedOxygen": 5.2
+  },
+  {
+    "timestamp": "2025-07-21T02:45:00Z",
+    "temperature": 27.0,
+    "pH": 5.9,
+    "dissolvedOxygen": 5.5
+  },
+  {
+    "timestamp": "2025-07-21T02:45:00Z",
+    "temperature": 27.9,
+    "pH": 5.0,
+    "dissolvedOxygen": 5.0
+  },
+  {
+    "timestamp": "2025-07-21T02:45:00Z",
+    "temperature": 27.5,
+    "pH": 5.3,
+    "dissolvedOxygen": 5.3
+  }
+]
