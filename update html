@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sensor Data Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+</head>
+  <style>
+
+
+    .header-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+    .header-center img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .section {
+      display: none;
+    }
+    .section.active {
+      display: block;
+    }
+
+    nav a.nav-link {
+      color: white;
+      text-decoration: none;
+      font-weight: normal;
+      margin: 0 5px;
+      padding: 5px 10px;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+
+    nav a.nav-link.active {
+      background-color: #386e8e;
+    }
+
+    #datetime {
+      color: white;
+      margin-bottom: 8px;
+      margin-top: 10px;
+      font-weight: normal;
+      font-size: 13px;
+      font-family: Arial, sans-serif;
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="login-active">
+
+  <!-- LOGIN FORM -->
+  <div id="loginContainer">
+    <div style="background-color: #aac5e0; padding: 40px 35px; border-radius: 10px; width: 360px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); border: 1px solid #95adca;">
+      <h2 style="text-align: center; color: #2d3e50; font-size: 40px; font-weight: 600; font-family: 'Poppins', sans-serif; margin-bottom: 30px;">AquaGuard Login</h2>
+      <form id="loginForm">
+        <div style="margin-bottom: 18px;">
+          <label for="username" style="display: block; font-size: 15px; font-weight: normal; color: #34495e; margin-bottom: 6px;">Username</label>
+          <input type="text" id="username" name="username" required style="width: 100%; padding: 10px 12px; border: 1px solid #ccd6e0; border-radius: 6px; background-color: #ffffff; font-size: 14px; color: #2d3e50; outline: none;" />
+        </div>
+
+        <div style="margin-bottom: 22px;">
+          <label for="password" style="display: block; font-size: 15px; font-weight: normal; color: #34495e; margin-bottom: 6px;">Password</label>
+          <input type="password" id="password" name="password" required style="width: 100%; padding: 10px 12px; border: 1px solid #ccd6e0; border-radius: 6px; background-color: #ffffff; font-size: 14px; color: #2d3e50; outline: none;" />
+         
+         
+          <!-- ✅ Show password checkbox -->
+          <div style="margin-top: 8px;">
+            <label for="showPassword" style="font-size: 13px; color: #2d3e50;">Show Password</label>
+          </div>
+        </div>
+
+        <button type="submit" style="width: 100%; padding: 12px; background-color: #1e87f0; border: none; border-radius: 6px; color: white; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s ease;">Sign In</button>
+
+        <p id="loginError" style="display: none; color: #e74c3c; text-align: center; margin-top: 15px; font-size: 14px;">Invalid username or password.</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- LOGOUT MESSAGE -->
+  <div id="logoutMessage" style="display:none; text-align:center; margin-top: 100px;">
+    <h2>Appreciate your visit. Monitoring made smarter with AquaGuard.</h2>
+    <button id="loginAgainBtn" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Log In Again</button>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboardContainer" style="display:none;">
+    <header style="display: flex; justify-content: space-between; align-items: center; background-color: #2c5977; padding: 30px;">
+      <div style="flex: 1;"></div>
+      <div style="text-align: center; flex: 2;">
+        <div class="header-center">
+          <h1 style="color: white; margin: 0;">AquaGuard | Pond Monitoring System</h1>
+        </div>
+
+        <nav style="margin-top: 10px;">
+
+  <a href="#" class="nav-link active" onclick="showSection('dashboard', this)">📊 Dashboard</a>
+  <a href="#" class="nav-link" onclick="showSection('data-visualization', this)">📈 Data Visualization</a>
+  <a href="#" class="nav-link" onclick="showSection('data-table', this)">📋 Sensor Data Table</a>
+  <a href="#" class="nav-link" onclick="showSection('alert-configuration', this)">🔔 Alert Configuration</a>
+</nav>
+
+
+      </div>
+      <div style="flex: 1; text-align: right;">
+        <div id="datetime"></div>
+        <button id="logoutBtn" style="background-color: #f44336; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer;">Logout</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="dashboard" class="section active">
+        <h2>Dashboard</h2>
+        <div class="graph-container">
+          <div><h3>Temperature</h3><canvas id="temperatureGraph"></canvas></div>
+          <div><h3>pH</h3><canvas id="phGraph"></canvas></div>
+          <div><h3>Dissolved Oxygen</h3><canvas id="oxygenGraph"></canvas></div>
+        </div>
+      </section>
+
+      <section id="data-visualization" class="section">
+        <h2>Data Visualization</h2>
+        <div class="pie-chart-container">
+          <div><h3>Temperature</h3><canvas id="temperaturePieChart"></canvas></div>
+          <div><h3>pH</h3><canvas id="phPieChart"></canvas></div>
+          <div><h3>Dissolved Oxygen</h3><canvas id="oxygenPieChart"></canvas></div>
+        </div>
+      </section>
+
+      <section id="data-table" class="section">
+        <h2>Sensor Data Table</h2>
+        <table id="sensorTable">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Temperature (°C)</th>
+              <th>pH</th>
+              <th>Dissolved Oxygen (ppm)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <!-- ✅ Export buttons -->
+        <button onclick="exportTableToExcel('sensorTable', 'Sensor_Data')" style="margin-top: 10px; padding: 8px 14px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
+          Export to Excel
+        </button>
+        <button onclick="exportTableToPDF()" style="margin-top: 10px; margin-left: 10px; padding: 8px 14px; background-color: #d9534f; color: white; border: none; border-radius: 5px; cursor: pointer;">
+          Export to PDF
+        </button>
+      </section>
+
+      <section id="alert-configuration" class="section">
+        <h2>Alert Configuration</h2>
+        <form id="alertForm">
+          <label for="temperatureRange">Temperature Range (°C):</label>
+          <input type="text" id="temperatureRange" name="temperatureRange" value="24-28" />
+          <label for="phRange">pH Range:</label>
+          <input type="text" id="phRange" name="phRange" value="6.5-7.5" />
+          <label for="oxygenRange">Dissolved Oxygen Range (ppm):</label>
+          <input type="text" id="oxygenRange" name="oxygenRange" value="5-6" />
+          <button type="submit">Save Configuration</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+  <p>&copy; 2025 AquaGuard | Pond Monitoring System. All rights reserved.</p>
+</footer>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const error = document.getElementById('loginError');
+
+      if (username === 'user' && password === 'password123') {
+        error.style.display = 'none';
+        document.getElementById('loginContainer').style.opacity = '0';
+        setTimeout(() => {
+          document.getElementById('loginContainer').style.display = 'none';
+          document.getElementById('dashboardContainer').style.display = 'block';
+          document.body.classList.remove('login-active');
+          document.body.classList.add('dashboard-active');
+        }, 300);
+      } else {
+        error.style.display = 'block';
+      }
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', function () {
+      document.getElementById('dashboardContainer').style.display = 'none';
+      document.getElementById('loginContainer').style.display = 'none';
+      document.getElementById('logoutMessage').style.display = 'block';
+      document.getElementById('username').value = '';
+      document.getElementById('password').value = '';
+      document.body.classList.remove('dashboard-active');
+      document.body.classList.add('login-active');
+    });
+
+    document.getElementById('loginAgainBtn').addEventListener('click', function() {
+      document.getElementById('logoutMessage').style.display = 'none';
+      document.getElementById('loginContainer').style.display = 'block';
+      document.body.classList.remove('dashboard-active');
+      document.body.classList.add('login-active');
+    });
+
+    function showSection(id, element) {
+      const sections = document.querySelectorAll('.section');
+      sections.forEach(section => section.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      const links = document.querySelectorAll('.nav-link');
+      links.forEach(link => link.classList.remove('active'));
+      element.classList.add('active');
+    }
+
+    function updateDateTime() {
+      const now = new Date();
+      const options = {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: true
+      };
+      document.getElementById('datetime').textContent = now.toLocaleString('en-US', options);
+    }
+
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+
+    function exportTableToExcel(tableID, filename = '') {
+      const table = document.getElementById(tableID);
+      const wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+      XLSX.writeFile(wb, filename ? `${filename}.xlsx` : 'export.xlsx');
+    }
+
+    // ✅ Toggle password visibility
+    function togglePassword() {
+      const passwordInput = document.getElementById("password");
+      passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+    }
+
+    // ✅ Export to PDF
+    function exportTableToPDF() {
+      const element = document.getElementById("sensorTable");
+      html2canvas(element).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jspdf.jsPDF();
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+        pdf.save("Sensor_Data.pdf");
+      });
+    }
+  </script>
+</body>
+</html>
