@@ -1,0 +1,450 @@
+ /* ===============================
+   ✅ YOUR ORIGINAL DASHBOARD CSS
+   =============================== */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #ffffff00;
+  overflow: hidden;
+}
+
+header {
+  background-color: #2e6483;
+  color: white;
+  padding: 20px 40px 30px 40px;
+  margin: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 100;
+}
+
+
+
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+  margin: 0 10px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 40px;
+}
+
+.graph-container, .pie-chart-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.graph-container > div, .pie-chart-container > div {
+  width: 300px;
+  margin: 10px;
+}
+
+canvas {
+  width: 100%;
+  height: 300px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  margin-bottom: 5px;
+}
+
+form input {
+  margin-bottom: 15px;
+  padding: 5px;
+}
+
+form button {
+  padding: 10px;
+  background-color: #8fd0f5;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #7bcdee;
+}
+
+#data-table {
+  margin: 20px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #000000;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #386583;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+footer {
+  text-align: center;
+  padding: 3px 0;
+  background-color: #4b8ea8bb;
+  color: white;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0; /* ✅ ADD THIS LINE */
+}
+
+
+
+/* ===============================
+   🟩 UPDATED LOGIN FORM
+   =============================== */
+#loginContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  padding: 25px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  z-index: 10;
+  font-family: Arial, sans-serif;
+}
+
+#loginContainer label, #loginContainer input {
+  display: block;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+#loginContainer input {
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+#loginContainer button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4b74c2;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#loginContainer button:hover {
+  background-color: #40528f;
+}
+
+#loginError {
+  color: red;
+  display: none;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* ===============================
+   ✅ INSERTED FIX FOR DASHBOARD VISIBILITY
+   =============================== */
+
+#dashboardContainer {
+  margin-top: 140px; /* Adjust to fit the height of the fixed header */
+  background-color: white;
+  padding: 20px;
+  border-radius: 0px;
+  box-shadow: 0 0 25px #ffffff;
+  z-index: 1;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+}
+
+
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.drop, .wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+}
+
+/* ===============================
+   ✅ INSERTED CODE FOR DASHBOARD SCROLL & TRANSITION
+   =============================== */
+
+/* Scrollable page after login */
+body.dashboard-active {
+  overflow-y: auto;
+}
+
+/* Optional: Fade in dashboard smoothly */
+#dashboardContainer {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+body.dashboard-active #dashboardContainer {
+  opacity: 1;
+}
+
+/* ===============================
+   ✅ INSERTED CODE FOR SOLID WHITE DASHBOARD
+   =============================== */
+
+#dashboardContainer {
+  background-color: white;
+  padding: 10px 20px 0 20px; /* 🔧 Moved content upward */
+  border-radius: 0px;
+  box-shadow: 0 0 25px #ffffff;
+  z-index: 1;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+}
+
+
+#logoutBtn {
+  background-color: #f44336;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  float: right;
+  margin-right: 20px;
+  border-radius: 4px;
+}
+
+#logoutBtn:hover {
+  background-color: #d32f2f;
+}
+
+/* ===============================
+   Minimalist style for logout message and login again button
+   =============================== */
+
+#logoutMessage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 320px;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+  text-align: center;
+  color: #333;
+  z-index: 20;
+}
+
+#logoutMessage h2 {
+  margin-bottom: 20px;
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+#loginAgainBtn {
+  padding: 10px 0;
+  width: 100%;
+  font-size: 16px;
+  background-color: #4c9dbd;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+#loginAgainBtn:hover {
+  background-color: #4583a0;
+}
+
+.alert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.alert-header h2 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.alert-header #logoutBtn {
+  background-color: #f44336;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.alert-header #logoutBtn:hover {
+  background-color: #d32f2f;
+}
+
+/* ===============================
+   ✅ Align Logout Button to Top Bar of Alert Configuration
+   =============================== */
+
+#alertSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#alertSection h2 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+#alertSection #logoutBtn {
+  margin: 0;
+  float: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#alertSection #logoutBtn:hover {
+  background-color: #d32f2f;
+}
+
+nav a.nav-link i {
+  margin-right: 6px;
+}
+
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;               /* 🔧 Make list items horizontal */
+  justify-content: center;     /* 🔧 Center the whole nav */
+  gap: 20px;                   /* 🔧 Space between items */
+  flex-wrap: wrap;             /* Optional: wrap on small screens */
+}
+
+nav ul li {
+  display: inline-block;
+}
+
+nav a.nav-link {
+  font-size: 15px;                 /* 🔧 Font size (adjust as needed) */
+  font-family: 'Segoe UI', Arial, sans-serif; /* 🔧 Font style */
+  font-weight: 400;                /* 🔧 Boldness (400 = normal, 600 = semi-bold, 700 = bold) */
+  color: white;
+  text-decoration: none;
+  padding: 5px 10px;
+  transition: background-color 0.3s ease;
+}
+
+
+
+nav a.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+}
+
+
+/* Modern Light Theme Table — Medium Size */
+#data-table {
+  margin: 30px auto;
+  overflow-x: auto;
+  max-width: 1100px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  font-size: 15px; /* Medium readable text */
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+table.data-table th, table.data-table td {
+  padding: 16px 24px; /* More spacious */
+  text-align: left;
+  color: #333;
+}
+
+table.data-table th {
+  background-color: #f5f5f5;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+table.data-table td {
+  border-top: 1px solid #e6e6e6;
+}
+
+table.data-table tr:hover td {
+  background-color: #fafafa;
+  transition: 0.2s ease;
+}
+
+table.data-table tr:first-child th:first-child {
+  border-top-left-radius: 12px;
+}
+table.data-table tr:first-child th:last-child {
+  border-top-right-radius: 12px;
+}
